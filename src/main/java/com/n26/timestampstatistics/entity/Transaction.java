@@ -1,7 +1,5 @@
 package com.n26.timestampstatistics.entity;
 
-import java.util.Objects;
-
 public class Transaction {
 
 	private Double amount;

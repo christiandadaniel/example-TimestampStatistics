@@ -1,5 +1,7 @@
 package com.n26.timestampstatistics.entity;
 
+import java.util.Objects;
+
 public class Statistics {
 	private Double sum = 0.0;
 	private Double avg = 0.0;
@@ -45,5 +47,23 @@ public class Statistics {
 
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Statistics that = (Statistics) o;
+		return Objects.equals(sum, that.sum) &&
+				Objects.equals(avg, that.avg) &&
+				Objects.equals(max, that.max) &&
+				Objects.equals(min, that.min) &&
+				Objects.equals(count, that.count);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(sum, avg, max, min, count);
 	}
 }

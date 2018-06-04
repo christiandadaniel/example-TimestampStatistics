@@ -4,7 +4,9 @@ import com.n26.timestampstatistics.entity.Statistics;
 import com.n26.timestampstatistics.entity.Transaction;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
@@ -16,8 +18,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private volatile double min;
 	private volatile double max;
 
-	private Object queueLock = new Object();
-	private Object statisticsLock = new Object();
+	private final Object queueLock = new Object();
+	private final Object statisticsLock = new Object();
 
 	public StatisticsServiceImpl() {
 		timeOrder = new PriorityQueue<>(Comparator.comparing(Transaction::getTimestamp));
