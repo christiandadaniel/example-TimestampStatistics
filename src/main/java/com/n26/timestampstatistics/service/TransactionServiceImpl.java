@@ -5,6 +5,8 @@ import com.n26.timestampstatistics.entity.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
@@ -19,13 +21,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public boolean createTransaction(Transaction transaction) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		//check if transaction wont be considered
-		long minimumTime = currentTimeMillis - parameters.getInterval();
+		long minimumTime = parameters.getCurrentMinimumTime();
 		if (transaction.getTimestamp() < minimumTime) return false;
 
-		statisticsService.addTransaction(transaction);
+		// Making sure this call is O(1) time
+		CompletableFuture.runAsync(() -> statisticsService.addTransaction(transaction));
 
 		return true;
 	}

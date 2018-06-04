@@ -30,7 +30,7 @@ public class TransactionServiceImplTest {
 	@Test
 	public void createTransactionNow() {
 		//given
-		when(parameters.getInterval()).thenReturn(100000L);
+		when(parameters.getCurrentMinimumTime()).thenReturn(100000L);
 		Transaction transaction = defaultTransactionNow();
 
 		//when
@@ -38,7 +38,7 @@ public class TransactionServiceImplTest {
 
 		//then
 		assertTrue(ret);
-		verify(parameters, times(1)).getInterval();
+		verify(parameters, times(1)).getCurrentMinimumTime();
 		verify(statisticsService, times(1)).addTransaction(transaction);
 		verifyNoMoreInteractions(parameters);
 		verifyNoMoreInteractions(statisticsService);
@@ -47,9 +47,9 @@ public class TransactionServiceImplTest {
 	@Test
 	public void createTransactionClosePast() {
 		//given
-		when(parameters.getInterval()).thenReturn(100000L);
+		when(parameters.getCurrentMinimumTime()).thenReturn(100000L);
 		Transaction transaction = defaultTransactionNow();
-		transaction.setTimestamp(transaction.getTimestamp() - 1000L);
+		transaction.setTimestamp(100001L);
 
 
 		//when
@@ -57,7 +57,7 @@ public class TransactionServiceImplTest {
 
 		//then
 		assertTrue(ret);
-		verify(parameters, times(1)).getInterval();
+		verify(parameters, times(1)).getCurrentMinimumTime();
 		verify(statisticsService, times(1)).addTransaction(transaction);
 		verifyNoMoreInteractions(parameters);
 		verifyNoMoreInteractions(statisticsService);
@@ -66,16 +66,16 @@ public class TransactionServiceImplTest {
 	@Test
 	public void createTransactionFarPast() {
 		//given
-		when(parameters.getInterval()).thenReturn(100000L);
+		when(parameters.getCurrentMinimumTime()).thenReturn(100000L);
 		Transaction transaction = defaultTransactionNow();
-		transaction.setTimestamp(transaction.getTimestamp() - 100001L);
+		transaction.setTimestamp(99999L);
 
 		//when
 		boolean ret = transactionService.createTransaction(transaction);
 
 		//then
 		assertFalse(ret);
-		verify(parameters, times(1)).getInterval();
+		verify(parameters, times(1)).getCurrentMinimumTime();
 		verifyNoMoreInteractions(parameters);
 		verifyZeroInteractions(statisticsService);
 	}

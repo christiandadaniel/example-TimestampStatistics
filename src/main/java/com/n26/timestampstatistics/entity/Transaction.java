@@ -23,17 +23,13 @@ public class Transaction {
 		this.timestamp = timestamp;
 	}
 
-	@Override
+	/*@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Transaction that = (Transaction) o;
 		return Objects.equals(amount, that.amount) &&
 				Objects.equals(timestamp, that.timestamp);
-	}
+	}*/
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(amount, timestamp);
-	}
 }
